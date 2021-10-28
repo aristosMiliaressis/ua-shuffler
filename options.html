@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>UA Shuffler</title> 
+        <meta charset="UTF-8" />
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="options.css">
+    </head>
+    <body>
+        <header>
+            <center>
+                <h2>UA Shuffler</h2>
+            </center>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a id="requestHeaderTab" class="active" href="options.html">Request Headers</a></li>
+                <!-- <li><a id="responseHeaderTab" href="options.html">Response Headers</a></li> -->
+                <li><a id="exportButton">Export</a></li>
+                <li><a id="importButton">Import</a>
+                    <input hidden type="file" id="optionsImport" accept="application/json, text/json">
+                </li>
+              </ul>
+        </nav>
+
+        <section>
+            <table id="header_table" >
+                <tr>
+                    <th>Name</th>
+                    <th>Values</th>
+                    <th></th>
+                </tr>
+            </table>
+
+            <template id="new_row_template">
+                <tr>
+                    <td>
+                        <input hidden type="text" name="header_name" placeholder="Header Name"/>
+                    </td>
+                    <td>
+                        <textarea hidden name="header_values" placeholder="Header values"></textarea>
+                    </td>
+                    <td>
+                        <button name="addHeader">+</button>
+                    </td>
+                </tr>
+            </template>
+        </section>
+
+        <script src="options.js"></script>
+    </body>
+</html>

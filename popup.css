@@ -1,0 +1,20 @@
+body {
+    min-width: 200px;
+    background-color: #ccc
+}
+
+button {
+    border-radius: 4px;
+    width:100%;
+    background-color: grey;
+
+    color:white;
+}
+
+.enabled {
+    background-color: green;
+}
+
+.disabled {
+    background-color: red;
+}

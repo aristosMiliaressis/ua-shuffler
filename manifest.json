@@ -1,0 +1,35 @@
+{
+  "manifest_version": 2,
+  "name": "UA Shuffler",
+  "description": "This extension shuffles trough request heder values.",
+  "version": "0.0.1",
+  "icons": {
+    "16": "/images/shuffle_x16.png",
+    "32": "/images/shuffle_x32.png",
+    "48": "/images/shuffle_x48.png",
+    "128": "/images/shuffle_x128.png"
+  },
+  "options_page": "options.html",
+  "browser_action": {
+    "default_icon": {
+      "16": "/images/shuffle_x16.png",
+      "32": "/images/shuffle_x32.png",
+      "48": "/images/shuffle_x48.png",
+      "128": "/images/shuffle_x128.png"
+    },
+    "default_title": "UA Shuffler",
+    "default_popup": "popup.html"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": true
+  },
+  "permissions": [
+    "tabs",
+    "activeTab", 
+    "storage",
+    "webRequest",
+    "webRequestBlocking",
+    "<all_urls>"
+  ]
+}
