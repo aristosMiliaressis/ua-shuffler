@@ -60,7 +60,7 @@ function loadOptionsFromStorage()
             var addRowButton = lastRow.querySelector('button');
 
             addRowButton.innerText = '-';
-            addRowButton.onclick = function() {removeRow(addRowButton); }
+            addRowButton.onclick = removeRow;
 
             var headerNameInput = lastRow.querySelector('input[name="header_name"]');
             headerNameInput.value = options[index].HeaderName;
@@ -78,7 +78,7 @@ function loadOptionsFromStorage()
 function addRowButtonHandler(addRowButton)
 {
     addRowButton.innerText = '-';
-    addRowButton.onclick = function() { removeRow(addRowButton); }
+    addRowButton.onclick = removeRow;
 
     addRow();
 }
@@ -86,8 +86,16 @@ function addRowButtonHandler(addRowButton)
 function addRow()
 {
     var table = document.querySelector('#header_table');
+
+    var template = document.querySelector('#new_row_template');
+    var clone = template.content.cloneNode(true);
+    clone.querySelector('button').onclick = function() { addRowButtonHandler(this); }
+    table.appendChild(clone);
+
     var rows = table.getElementsByTagName('tr');
     var index = rows.length;
+
+    table.lastElementChild.setAttribute('index', index-1);
 
     var headerNameInput = table.lastElementChild.querySelector('input[name="header_name"]');
     if (headerNameInput != null)
@@ -122,27 +130,23 @@ function addRow()
             });
         }
     }
-
-    var template = document.querySelector('#new_row_template');
-    var clone = template.content.cloneNode(true);
-    clone.querySelector('button').onclick = function() { addRowButtonHandler(this); }
-    table.appendChild(clone);
 }
 
-function removeRow(source)
+function removeRow(event)
 {
-    var row = source.parentElement.parentElement;
-
-    var table = document.querySelector('#header_table');
-    var rows = table.getElementsByTagName('tr');
-
     chrome.storage.local.get('options', (data) =>
     {
+        var row = event.target.parentElement.parentElement;
+
+        var index = row.getAttribute('index');
+
         var options = Object.assign({}, data.options);
-        options[rows.length-1] = undefined
+        options[index] = undefined;
+
         syncOptionsToStorage(options);
+
+        row.remove();
     });
 
-    row.remove();
 }
 
