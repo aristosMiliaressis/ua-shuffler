@@ -1,10 +1,10 @@
-document.body.onload = loadSettingsFromStorage;
+document.body.onload = loadOptionsFromStorage;
 
 window.exportButton.onclick = exportOptions;
 window.importButton.onclick = importOptions;
 
 function exportOptions() {
-    chrome.storage.local.get('options', (data) => 
+    chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
 
@@ -18,12 +18,12 @@ function exportOptions() {
     });
 }
 
-function importOptions() 
+function importOptions()
 {
-    window.optionsImport.onchange = function() 
+    window.optionsImport.onchange = function()
     {
         var reader = new FileReader(this.files[0]);
-        reader.onload = function(event) 
+        reader.onload = function(event)
         {
             chrome.storage.local.set({options: JSON.parse(event.target.result)});
             location = "options.html";
@@ -33,116 +33,116 @@ function importOptions()
     window.optionsImport.click();
 }
 
-function loadSettingsFromStorage() 
+function syncOptionsToStorage(options)
 {
-    chrome.storage.local.get('options', (data) => 
+    chrome.storage.local.set({options}, () =>
+    {
+        chrome.runtime.sendMessage("reload");
+    });
+}
+
+function loadOptionsFromStorage()
+{
+    chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
 
         var table = document.querySelector('#header_table');
         var rows = table.getElementsByTagName('tr');
 
-        for (var header in options) {
-            if (header == undefined)
+        for (var index in options) {
+            if (index == undefined)
                 continue;
 
-            addRow(rows.length);
+            addRow();
             rows = table.getElementsByTagName('tr');
             var lastRow = rows[rows.length-1];
+            var addRowButton = lastRow.querySelector('button');
+
+            addRowButton.innerText = '-';
+            addRowButton.onclick = function() {removeRow(addRowButton); }
 
             var headerNameInput = lastRow.querySelector('input[name="header_name"]');
-            headerNameInput.value = options[header].HeaderName;
+            headerNameInput.value = options[index].HeaderName;
 
             var headerValueTextArea = lastRow.querySelector('textarea[name="header_values"]');
-            headerValueTextArea.removeAttribute("hidden"); 
-            headerValueTextArea.value = options[header].HeaderValues?.join('\r\n') || {};
+            headerValueTextArea.removeAttribute("hidden");
+            headerValueTextArea.value = options[index].HeaderValues?.join('\r\n') || {};
             headerValueTextArea.style.height = headerValueTextArea.scrollHeight+'px';
-
-            var button = lastRow.querySelector('button');
-            button.innerText = '-';
-            button.onclick = function() {removeHeader(button); }
         }
 
-        addRow(rows.length);
+        addRow();
     });
 }
 
-function addRow(index) 
+function addRowButtonHandler(addRowButton)
+{
+    addRowButton.innerText = '-';
+    addRowButton.onclick = function() { removeRow(addRowButton); }
+
+    addRow();
+}
+
+function addRow()
 {
     var table = document.querySelector('#header_table');
-    
+    var rows = table.getElementsByTagName('tr');
+    var index = rows.length;
+
     var headerNameInput = table.lastElementChild.querySelector('input[name="header_name"]');
     if (headerNameInput != null)
     {
-        headerNameInput.removeAttribute("hidden"); 
-        headerNameInput.onchange = function (event) 
+        headerNameInput.removeAttribute("hidden");
+        headerNameInput.onchange = function (event)
         {
-            chrome.storage.local.get('options', (data) => 
+            chrome.storage.local.get('options', (data) =>
             {
                 var options = Object.assign({}, data.options);
-                var rowOption = options[index] || {};
+                var rowOption = options[index-1] || {};
                 rowOption.HeaderName = event.target.value;
-                options[index] = rowOption;
-                updateOptions(options);
+                options[index-1] = rowOption;
+                syncOptionsToStorage(options);
             });
         }
     }
-    
+
     var headerValuesInput = table.lastElementChild.querySelector('textarea[name="header_values"]');
     if (headerValuesInput != null)
     {
-        headerValuesInput.removeAttribute("hidden"); 
-        headerValuesInput.onchange = function (event) 
+        headerValuesInput.removeAttribute("hidden");
+        headerValuesInput.onchange = function (event)
         {
-            chrome.storage.local.get('options', (data) => 
+            chrome.storage.local.get('options', (data) =>
             {
                 var options = Object.assign({}, data.options);
-                var rowOption = options[index] || {};
+                var rowOption = options[index-1] || {};
                 rowOption.HeaderValues = event.target.value.split(/\r?\n/);
-                options[index] = rowOption;
-                updateOptions(options);
+                options[index-1] = rowOption;
+                syncOptionsToStorage(options);
             });
         }
     }
 
     var template = document.querySelector('#new_row_template');
     var clone = template.content.cloneNode(true);
-    clone.querySelector('button').onclick = function() { addHeader(this); }
+    clone.querySelector('button').onclick = function() { addRowButtonHandler(this); }
     table.appendChild(clone);
 }
 
-function addHeader(source) 
-{
-    source.innerText = '-';
-    source.onclick = function() {removeHeader(source); }
-
-    var table = document.querySelector('#header_table');
-    var rows = table.getElementsByTagName('tr');
-
-    addRow(rows.length);
-}
-
-function removeHeader(source) 
+function removeRow(source)
 {
     var row = source.parentElement.parentElement;
 
     var table = document.querySelector('#header_table');
     var rows = table.getElementsByTagName('tr');
 
-    chrome.storage.local.get('options', (data) => 
+    chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
         options[rows.length-1] = undefined
-        updateOptions(options);
+        syncOptionsToStorage(options);
     });
 
     row.remove();
 }
 
-function updateOptions(options)
-{
-    chrome.storage.local.set({options}, () => 
-    {
-        chrome.runtime.sendMessage("reload");
-    });
-}
