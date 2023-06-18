@@ -1,20 +1,24 @@
 "use strict";
 
 let options;
-const isChrome = (navigator.userAgent.toLowerCase().indexOf("chrome") !== -1);
+
+// need to have "extraHeaders" option for chrome https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
+const extraInfoSpec = (navigator.userAgent.toLowerCase().indexOf("chrome") !== -1)
+                  ? ["blocking", "requestHeaders", "extraHeaders"]
+                  : ["blocking", "requestHeaders"];
 
 chrome.storage.local.get(['options'], function (result) 
 {
   options = result.options;
 
-  addListener();
+  chrome.runtime.onMessage.addListener(optionsUpdated);
 });
 
-
-function rewriteRequestHeader(e) 
+function beforeSendHeaders(e) 
 {
   for (let key in options) 
   {
+    console.log(JSON.stringify(options))
     var to_modify = options[key];
     if (to_modify.Disabled)
       continue;
@@ -43,30 +47,14 @@ function rewriteRequestHeader(e)
   return { requestHeaders: e.requestHeaders };
 }
 
-function updateOptions(message) 
+function optionsUpdated(message) 
 {
   chrome.storage.local.get(['options'], function (result) 
   {
     options = result.options;
-    removeListener();
-      if (Object.keys(options).filter(k => !options[k].Disabled))
-        addListener();
+    
+    chrome.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeaders);
+    if (Object.keys(options).filter(k => !options[k].Disabled))
+      chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendHeaders, { urls: [ "<all_urls>"] }, extraInfoSpec);
   });
-}
-
-function addListener() 
-{
-  // need to have "extraHeaders" option for chrome https://developer.chrome.com/extensions/webRequest#life_cycle_footnote
-  var extraInfoSpec = isChrome
-                    ? ["blocking", "requestHeaders", "extraHeaders"]
-                    : ["blocking", "requestHeaders"];
-
-  chrome.webRequest.onBeforeSendHeaders.addListener(rewriteRequestHeader, { urls: [ "<all_urls>"] }, extraInfoSpec);
-
-  chrome.runtime.onMessage.addListener(updateOptions);
-}
-
-function removeListener() 
-{
-  chrome.webRequest.onBeforeSendHeaders.removeListener(rewriteRequestHeader);
 }

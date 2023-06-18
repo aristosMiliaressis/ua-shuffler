@@ -1,4 +1,4 @@
-document.body.onload = loadOptionsFromStorage;
+document.body.onload = populateOptionsPage;
 
 window.exportButton.onclick = exportOptions;
 window.importButton.onclick = importOptions;
@@ -33,15 +33,7 @@ function importOptions()
     window.optionsImport.click();
 }
 
-function syncOptionsToStorage(options)
-{
-    chrome.storage.local.set({options}, () =>
-    {
-        chrome.runtime.sendMessage("reload");
-    });
-}
-
-function loadOptionsFromStorage()
+function populateOptionsPage()
 {
     chrome.storage.local.get('options', (data) =>
     {
@@ -49,9 +41,7 @@ function loadOptionsFromStorage()
 
         var table = document.querySelector('#header_table');
 
-        for (var index in options) {
-            if (index == undefined)
-                continue;
+        for (var name in options.headers) {
 
             addRow();
 
@@ -60,11 +50,11 @@ function loadOptionsFromStorage()
             addRowButton.onclick = removeRow;
 
             var headerNameInput = table.lastElementChild.querySelector('input[name="header_name"]');
-            headerNameInput.value = options[index].HeaderName;
+            headerNameInput.value = name;
 
             var headerValueTextArea = table.lastElementChild.querySelector('textarea[name="header_values"]');
             headerValueTextArea.removeAttribute("hidden");
-            headerValueTextArea.value = options[index].HeaderValues?.join('\r\n') || {};
+            headerValueTextArea.value = options.headers[name].Values?.join('\r\n') || {};
             headerValueTextArea.style.height = headerValueTextArea.scrollHeight+'px';
         }
 
@@ -72,7 +62,29 @@ function loadOptionsFromStorage()
     });
 }
 
-function addRowButtonHandler(addRowButton)
+function updateOptions()
+{
+    console.log("updateOptions")
+
+    let options = { headers: {} }
+    let headerRows = document.querySelectorAll('#header_table tr');
+    for (let row of headerRows)
+    {
+        let headerName = row.querySelector("[name=header_name]").value;
+        let headerValues = row.querySelector("[name=header_values]").value;
+        if (headerName == "")
+            continue;
+
+        options.headers[headerName] = { Enabled: false, Values: headerValues.split(/\r?\n/) };
+    }
+
+    chrome.storage.local.set({options}, () =>
+    {
+        chrome.runtime.sendMessage("reload");
+    });
+}
+
+function toggleButtonAction(addRowButton)
 {
     addRowButton.innerText = '-';
     addRowButton.onclick = removeRow;
@@ -83,65 +95,28 @@ function addRowButtonHandler(addRowButton)
 function addRow()
 {
     var table = document.querySelector('#header_table');
-    var index = 0;
-    if (table.lastElementChild != null)
-        index = parseInt(table.lastElementChild.getAttribute('index'))+1;
-
     var template = document.querySelector('#new_row_template');
     var clone = template.content.cloneNode(true);
-    clone.querySelector('button').onclick = function() { addRowButtonHandler(this); }
+    clone.querySelector('button').onclick = function() { toggleButtonAction(this); }
     table.appendChild(clone);
-
-    table.lastElementChild.setAttribute('index', index);
 
     var headerNameInput = table.lastElementChild.querySelector('input[name="header_name"]');
     if (headerNameInput != null)
     {
         headerNameInput.removeAttribute("hidden");
-        headerNameInput.onkeyup = function (event)
-        {
-            chrome.storage.local.get('options', (data) =>
-            {
-                var options = Object.assign({}, data.options);
-                var rowOption = options[index] || {};
-                rowOption.HeaderName = event.target.value;
-                options[index] = rowOption;
-                syncOptionsToStorage(options);
-            });
-        }
+        headerNameInput.onkeyup = updateOptions;
     }
 
     var headerValuesInput = table.lastElementChild.querySelector('textarea[name="header_values"]');
     if (headerValuesInput != null)
     {
         headerValuesInput.removeAttribute("hidden");
-        headerValuesInput.onkeyup = function (event)
-        {
-            chrome.storage.local.get('options', (data) =>
-            {
-                var options = Object.assign({}, data.options);
-                var rowOption = options[index] || {};
-                rowOption.HeaderValues = event.target.value.split(/\r?\n/);
-                options[index] = rowOption;
-                syncOptionsToStorage(options);
-            });
-        }
+        headerValuesInput.onkeyup = updateOptions;
     }
 }
 
 function removeRow(event)
 {
-    chrome.storage.local.get('options', (data) =>
-    {
-        var row = event.target.parentElement.parentElement;
-
-        var index = parseInt(row.getAttribute('index'));
-
-        var options = Object.assign({}, data.options);
-        options[index] = undefined;
-
-        syncOptionsToStorage(options);
-
-        row.remove();
-    });
+    event.target.parentElement.parentElement.remove();
+    updateOptions();
 }
