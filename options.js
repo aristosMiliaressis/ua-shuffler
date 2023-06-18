@@ -64,18 +64,18 @@ function populateOptionsPage()
 
 function updateOptions()
 {
-    console.log("updateOptions")
-
     let options = { headers: {} }
     let headerRows = document.querySelectorAll('#header_table tr');
     for (let row of headerRows)
     {
-        let headerName = row.querySelector("[name=header_name]").value;
-        let headerValues = row.querySelector("[name=header_values]").value;
-        if (headerName == "")
+        let headerName = row.querySelector("[name=header_name]");
+        let headerValues = row.querySelector("[name=header_values]");
+        if (headerName.value == "")
             continue;
 
-        options.headers[headerName] = { Enabled: false, Values: headerValues.split(/\r?\n/) };
+        headerName.value = headerName.value.toLowerCase();
+
+        options.headers[headerName.value] = { Enabled: true, Values: headerValues.value.split(/\r?\n/) };
     }
 
     chrome.storage.local.set({options}, () =>

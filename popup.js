@@ -25,8 +25,6 @@ function toggleHeader() {
     chrome.storage.local.get('options', (data) => {
         var options = Object.assign({}, data.options);
 
-        console.log(this)
-
         options.headers[this.innerText].Enabled = !options.headers[this.innerText].Enabled;
         this.classList.add(options.headers[this.innerText].Enabled ? 'enabled' : 'disabled');
         this.classList.remove(options.headers[this.innerText].Enabled ? 'disabled' : 'enabled');
