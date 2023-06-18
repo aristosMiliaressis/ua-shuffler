@@ -14,21 +14,24 @@ chrome.storage.local.get(['options'], function (result)
   chrome.runtime.onMessage.addListener(optionsUpdated);
 });
 
+chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendHeaders, { urls: [ "<all_urls>"] }, extraInfoSpec);
+
 function beforeSendHeaders(e) 
 {
-  for (let key in options) 
+  for (let name in options.headers) 
   {
-    console.log(JSON.stringify(options))
-    var to_modify = options[key];
-    if (to_modify.Disabled)
+    var to_modify = options.headers[name];
+    if (!to_modify.Enabled)
       continue;
 
-    var randomValue = to_modify.HeaderValues[Math.floor(Math.random() * to_modify.HeaderValues.length)];
+    var randomValue = to_modify.Values[Math.floor(Math.random() * to_modify.Values.length)];
+
+    randomValue = interpolate(e, randomValue)
 
     let found = false;
     for (let header of e.requestHeaders) 
     {
-      if (header.name.toLowerCase() === to_modify.HeaderName.toLowerCase()) 
+      if (header.name.toLowerCase() === name.toLowerCase()) 
       {
         header.value = randomValue;
         found = true;
@@ -39,12 +42,19 @@ function beforeSendHeaders(e)
     {
       e.requestHeaders.push(
         { 
-          "name": to_modify.HeaderName, 
+          "name": name, 
           "value": randomValue
         });
     }
   }
   return { requestHeaders: e.requestHeaders };
+}
+
+function interpolate(e, value)
+{
+  return value
+          .replace("{BASE64URL}", window.btoa(e.url.substring(0, 44)).replaceAll("=", ""))
+          .replace("{UNIXTIME}", Date.now())
 }
 
 function optionsUpdated(message) 
