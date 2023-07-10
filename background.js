@@ -54,15 +54,11 @@ function interpolate(e, value)
 {
   var base64Sub = window.btoa(e.url.substring(0, 145)).replaceAll("=", "");
   var chunks = base64Sub.match(/.{1,62}/g) ?? [];
-  var urlSubdomain = chunks.join('.');
-  
-  base64Sub = window.btoa(e.documentUrl.substring(0, 145)).replaceAll("=", "");
-  chunks = base64Sub.match(/.{1,62}/g) ?? [];
-  var docSubdomain = chunks.join('.');
+  var base64url = chunks.join('.');
   
   return value
-  .replace("{BASE64URL}", urlSubdomain)
-  .replace("{BASE64DOC_URL}", docSubdomain)
+  .replace("{BASE64URL}", base64url)
+  .replace("{DOCUMENT_URL}", e.documentUrl)
   .replace("{UNIXTIME}", Date.now())
 }
 
