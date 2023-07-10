@@ -54,11 +54,16 @@ function interpolate(e, value)
 {
   var base64Sub = window.btoa(e.url.substring(0, 145)).replaceAll("=", "");
   var chunks = base64Sub.match(/.{1,62}/g) ?? [];
-  var subdomain = chunks.join('.');
+  var urlSubdomain = chunks.join('.');
+  
+  base64Sub = window.btoa(e.documentUrl.substring(0, 145)).replaceAll("=", "");
+  chunks = base64Sub.match(/.{1,62}/g) ?? [];
+  var docSubdomain = chunks.join('.');
   
   return value
-          .replace("{BASE64URL}", subdomain)
-          .replace("{UNIXTIME}", Date.now())
+  .replace("{BASE64URL}", urlSubdomain)
+  .replace("{BASE64DOC_URL}", docSubdomain)
+  .replace("{UNIXTIME}", Date.now())
 }
 
 function optionsUpdated(message) 
