@@ -52,8 +52,12 @@ function beforeSendHeaders(e)
 
 function interpolate(e, value)
 {
+  var base64Sub = window.btoa(e.url.substring(0, 145)).replaceAll("=", "");
+  var chunks = base64Sub.match(/.{1,62}/g) ?? [];
+  var subdomain = chunks.join('.');
+  
   return value
-          .replace("{BASE64URL}", window.btoa(e.url.substring(0, 44)).replaceAll("=", ""))
+          .replace("{BASE64URL}", subdomain)
           .replace("{UNIXTIME}", Date.now())
 }
 
