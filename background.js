@@ -66,8 +66,19 @@ function interpolate(e, value)
   if (base64Sub != undefined)
     base64Sub = base64Sub.replaceAll("=", "").match(/.{1,63}/g)[0];
   
+  var normalizedUrl = e.url.substring(0, e.url.indexOf("?"))
+                        .replace("http://", "")
+                        .replace("https://", "")
+                        .replaceAll('.', '-')
+                        .replaceAll('/', '_')
+                        .match(/.{1,63}/g)[0]
+  
+  while (normalizedUrl.endsWith('-') || normalizedUrl.endsWith('_'))
+  normalizedUrl = normalizedUrl.substring(0, normalizedUrl.length-1);
+    
   return value
   .replace("{BASE32_URL_PREFIX}", base64Sub)
+  .replace("{NORMALIZED_URL}", normalizedUrl)
   .replace("{DOCUMENT_URL}", e.documentUrl)
   .replace("{ORIGIN_URL}", e.originUrl)
   .replace("{INITIATOR_URL}", e.initiator)

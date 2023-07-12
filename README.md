@@ -4,6 +4,8 @@ ua-shuffler is a chrome extension that lets you specify request headers with a l
 
 +interpolation support for vars {BASE32_URL_PREFIX}, {UNIXTIME}, {DOCUMENT_URL}, {ORIGIN_URL} & {INITIATOR_URL}
 
++support for cache buster insertion on every request
+
 ![options](images/options.png)
 
 ![popup](images/popup.png)
