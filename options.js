@@ -64,7 +64,7 @@ function populateOptionsPage()
 
 function updateOptions()
 {
-    let options = { headers: {} }
+    let options = { cacheBusting: false, headers: {} }
     let headerRows = document.querySelectorAll('#header_table tr');
     for (let row of headerRows)
     {

@@ -14,12 +14,22 @@ chrome.storage.local.get(['options'], function (result)
   chrome.runtime.onMessage.addListener(optionsUpdated);
 });
 
-chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendHeaders, { urls: [ "<all_urls>"] }, extraInfoSpec);
+optionsUpdated();
 
-function beforeSendHeaders(e) 
-{
-  for (let name in options.headers) 
-  {
+function beforeRequest(e) {
+  var url=""
+  if(e.url.indexOf('?')>-1){
+    var u = new URL(e.url);
+    u.searchParams.set('cachebusterTimestamp', ""+(+ new Date()));
+    url = u.toString()
+  }else{
+    url = e.url+"?cachebusterTimestamp="+(+ new Date());
+  }
+  return {"redirectUrl": url};
+}
+
+function beforeSendHeaders(e) {
+  for (let name in options.headers) {
     var to_modify = options.headers[name];
     if (!to_modify.Enabled)
       continue;
@@ -52,9 +62,9 @@ function beforeSendHeaders(e)
 
 function interpolate(e, value)
 {
-  var base64Sub = base32.encode(e.url.replace("http://", "").replace("https://", ""))
-                  .replaceAll("=", "")
-                  .match(/.{1,63}/g)[0];
+  var base64Sub = base32.encode(e.url.replace("http://", "").replace("https://", ""));
+  if (base64Sub != undefined)
+    base64Sub = base64Sub.replaceAll("=", "").match(/.{1,63}/g)[0];
   
   return value
   .replace("{BASE32_URL_PREFIX}", base64Sub)
@@ -64,15 +74,20 @@ function interpolate(e, value)
   .replace("{UNIXTIME}", Date.now())
 }
 
-function optionsUpdated(message) 
+function optionsUpdated() 
 {
-  chrome.storage.local.get(['options'], function (result) 
-  {
-    options = result.options;
-    
+  chrome.storage.local.get('options', (data) => {
+    options = Object.assign({}, data.options);
+
     chrome.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeaders);
-    if (Object.keys(options).filter(k => !options[k].Disabled))
+    if (Object.keys(options.headers).filter(k => !options.headers[k].Disabled)) {  
       chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendHeaders, { urls: [ "<all_urls>"] }, extraInfoSpec);
+    }
+    
+    chrome.webRequest.onBeforeRequest.removeListener(beforeRequest);
+    if (options.cacheBusting) {
+      chrome.webRequest.onBeforeRequest.addListener(beforeRequest,  {"urls":["http://*/*","https://*/*"]}, ["blocking"]);
+    }
   });
 }
 

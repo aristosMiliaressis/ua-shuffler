@@ -1,5 +1,6 @@
 document.body.onload = populateOptionsPopup;
-window.optionsButton.onclick= function() { window.open("options.html", '_blank').focus(); };
+optionsButton.onclick = () => window.open("options.html", '_blank').focus();
+cacheBustingToggle.onclick = toggleCacheBusting;
 
 function populateOptionsPopup() {
     var header_toggles = document.querySelector('#header_toggles');
@@ -7,6 +8,8 @@ function populateOptionsPopup() {
     chrome.storage.local.get('options', (data) => {
         var options = Object.assign({}, data.options);
 
+        cacheBustingToggle.classList.add(options.cacheBusting ? 'enabled' : 'disabled');
+                
         for (var name in options.headers) {
             var br = document.createElement('br');
             var button = document.createElement('button');
@@ -18,6 +21,18 @@ function populateOptionsPopup() {
             header_toggles.appendChild(button);
             header_toggles.appendChild(br);
         }
+    });
+}
+
+function toggleCacheBusting() {
+    chrome.storage.local.get('options', (data) => {
+        var options = Object.assign({}, data.options);
+
+        options.cacheBusting = !options.cacheBusting;
+        cacheBustingToggle.className = "";
+        cacheBustingToggle.classList.add(options.cacheBusting ? 'enabled' : 'disabled')
+        
+        updateOptions(options);  
     });
 }
 
