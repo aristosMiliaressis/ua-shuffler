@@ -29,6 +29,15 @@ function beforeRequest(e) {
 }
 
 function beforeSendHeaders(e) {
+  var referer, origin = "";
+  for (const header of e.requestHeaders) {
+    if (header.name.toLowerCase() === "referer") {
+      referer = header.value;
+    } else if (header.name.toLowerCase() === "origin") {
+      origin = header.value;
+    }
+  }
+  
   for (let name in options.headers) {
     var to_modify = options.headers[name];
     if (!to_modify.Enabled)
@@ -36,7 +45,7 @@ function beforeSendHeaders(e) {
 
     var randomValue = to_modify.Values[Math.floor(Math.random() * to_modify.Values.length)];
 
-    randomValue = interpolate(e, randomValue)
+    randomValue = interpolate(e, randomValue, referer, origin)
 
     let found = false;
     for (let header of e.requestHeaders) 
@@ -60,11 +69,12 @@ function beforeSendHeaders(e) {
   return { requestHeaders: e.requestHeaders };
 }
 
-function interpolate(e, value)
+function interpolate(e, value, referer, origin)
 {
   var base64Sub = base32.encode(e.url.replace("http://", "").replace("https://", ""));
-  if (base64Sub != undefined)
+  if (base64Sub != undefined) {
     base64Sub = base64Sub.replaceAll("=", "").match(/.{1,63}/g)[0];
+  }
   
   var normalizedUrl = e.url.substring(0, e.url.indexOf("?"))
                         .replace("http://", "")
@@ -73,16 +83,19 @@ function interpolate(e, value)
                         .replaceAll('/', '_')
                         .match(/.{1,63}/g)[0]
   
-  while (normalizedUrl.endsWith('-') || normalizedUrl.endsWith('_'))
-  normalizedUrl = normalizedUrl.substring(0, normalizedUrl.length-1);
-    
+  while (normalizedUrl.endsWith('-') || normalizedUrl.endsWith('_')) {
+    normalizedUrl = normalizedUrl.substring(0, normalizedUrl.length-1);
+  }
+  
   return value
-  .replace("{BASE32_URL_PREFIX}", base64Sub)
-  .replace("{NORMALIZED_URL}", normalizedUrl)
-  .replace("{DOCUMENT_URL}", e.documentUrl)
-  .replace("{ORIGIN_URL}", e.originUrl)
-  .replace("{INITIATOR_URL}", e.initiator)
-  .replace("{UNIXTIME}", Date.now())
+          .replace("{BASE32_URL_PREFIX}", base64Sub)
+          .replace("{NORMALIZED_URL}", normalizedUrl)
+          .replace("{DOCUMENT_URL}", e.documentUrl)
+          .replace("{ORIGIN_URL}", e.originUrl)
+          .replace("{INITIATOR_URL}", e.initiator)
+          .replace("{REFERER_HEADER}", referer)
+          .replace("{ORIGIN_HEADER}", origin)
+          .replace("{UNIXTIME}", Date.now())
 }
 
 function optionsUpdated() 
