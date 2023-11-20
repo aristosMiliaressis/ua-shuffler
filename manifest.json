@@ -9,7 +9,7 @@
     "48": "/images/shuffle_x48.png",
     "128": "/images/shuffle_x128.png"
   },
-  "options_page": "options.html",
+  "options_page": "options/options.html",
   "browser_action": {
     "default_icon": {
       "16": "/images/shuffle_x16.png",
@@ -18,7 +18,7 @@
       "128": "/images/shuffle_x128.png"
     },
     "default_title": "UA Shuffler",
-    "default_popup": "popup.html"
+    "default_popup": "popup/popup.html"
   },
   "background": {
     "scripts": ["background.js"],

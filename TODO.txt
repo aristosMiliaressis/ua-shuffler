@@ -1,0 +1,18 @@
+
+url decode query values before setting (to maintain original encoding)
+
+1. duplicate headers/query
+
+2. remove request headers
+	Referer
+	Origin
+	Sec-Fetch
+	Host
+	Content-Type
+remove response headers
+	CSP
+remove query
+
+
+logging header values
+regex extract

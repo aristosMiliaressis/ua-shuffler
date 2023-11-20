@@ -1,4 +1,5 @@
 {
+   "fields": {
       "headers": {
          "accept-language": {
             "Enabled": true,
@@ -36,5 +37,16 @@
             "Enabled": true,
             "Values": ["/lol-x-rewrite-url"]
          }
+      },
+      "query": {
+         "cb": {
+            "Enabled": true,
+            "Values": ["{{UNIXTIME}}"]
+         },
+         "callback": {
+            "Enabled": false,
+            "Values": ["prompt" ]
+         }
       }
    }
+}

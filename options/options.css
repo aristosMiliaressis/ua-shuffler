@@ -84,3 +84,7 @@ li a:hover:not(.active) {
 section {
     margin-left:10%
 }
+
+#exportButton:hover, #importButton:hover {
+    cursor: pointer;
+}

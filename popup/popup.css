@@ -18,3 +18,12 @@ button {
 .disabled {
     background-color: red;
 }
+
+.row {
+    min-width: 500px;
+    display: flex;
+}
+
+.column {
+    flex: 50%;
+}

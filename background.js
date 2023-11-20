@@ -17,15 +17,23 @@ chrome.storage.local.get(['options'], function (result)
 optionsUpdated();
 
 function beforeRequest(e) {
-  var url=""
-  if(e.url.indexOf('?')>-1){
-    var u = new URL(e.url);
-    u.searchParams.set('cachebusterTimestamp', ""+(+ new Date()));
-    url = u.toString()
-  }else{
-    url = e.url+"?cachebusterTimestamp="+(+ new Date());
+  let url = new URL(e.url);
+  let urlParams = new URLSearchParams(url.search);
+
+  for (let name in options.fields.query) {
+    var to_modify = options.fields.query[name];
+    if (!to_modify.Enabled)
+      continue;
+
+    var randomValue = to_modify.Values[Math.floor(Math.random() * to_modify.Values.length)];
+
+    randomValue = interpolate(e, randomValue, undefined, undefined)
+
+    urlParams.set(name, randomValue)
   }
-  return {"redirectUrl": url};
+  url.search = urlParams.toString()
+  console.log(url)
+  return {"redirectUrl": url.toString()};
 }
 
 function beforeSendHeaders(e) {
@@ -38,8 +46,8 @@ function beforeSendHeaders(e) {
     }
   }
   
-  for (let name in options.headers) {
-    var to_modify = options.headers[name];
+  for (let name in options.fields.headers) {
+    var to_modify = options.fields.headers[name];
     if (!to_modify.Enabled)
       continue;
 
@@ -76,26 +84,26 @@ function interpolate(e, value, referer, origin)
     base64Sub = base64Sub.replaceAll("=", "").match(/.{1,63}/g)[0];
   }
   
-  var normalizedUrl = e.url.substring(0, e.url.indexOf("?"))
-                        .replace("http://", "")
-                        .replace("https://", "")
-                        .replaceAll('.', '-')
-                        .replaceAll('/', '_')
-                        .match(/.{1,63}/g)[0]
-  
+  var normalizedUrl = e.url.substring(0, e.url.indexOf("?") == -1 ? 63 : e.url.indexOf("?"))
+      .replace("http://", "")
+      .replace("https://", "")
+      .replaceAll('.', '-')
+      .replaceAll('/', '_')
+      .match(/.{1,63}/g)[0]
+
   while (normalizedUrl.endsWith('-') || normalizedUrl.endsWith('_')) {
     normalizedUrl = normalizedUrl.substring(0, normalizedUrl.length-1);
   }
   
   return value
-          .replace("{BASE32_URL_PREFIX}", base64Sub)
-          .replace("{NORMALIZED_URL}", normalizedUrl)
-          .replace("{DOCUMENT_URL}", e.documentUrl)
-          .replace("{ORIGIN_URL}", e.originUrl)
-          .replace("{INITIATOR_URL}", e.initiator)
-          .replace("{REFERER_HEADER}", referer)
-          .replace("{ORIGIN_HEADER}", origin)
-          .replace("{UNIXTIME}", Date.now())
+      .replace("{BASE32_URL_PREFIX}", base64Sub)
+      .replace("{NORMALIZED_URL}", normalizedUrl)
+      .replace("{DOCUMENT_URL}", e.documentUrl)
+      .replace("{ORIGIN_URL}", e.originUrl)
+      .replace("{INITIATOR_URL}", e.initiator)
+      .replace("{REFERER_HEADER}", referer)
+      .replace("{ORIGIN_HEADER}", origin)
+      .replace("{UNIXTIME}", Date.now())
 }
 
 function optionsUpdated() 
@@ -104,12 +112,12 @@ function optionsUpdated()
     options = Object.assign({}, data.options);
 
     chrome.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeaders);
-    if (Object.keys(options.headers).filter(k => !options.headers[k].Disabled)) {  
+    if (Object.keys(options.fields.headers).filter(k => !options.fields.headers[k].Disabled)) {  
       chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendHeaders, { urls: [ "<all_urls>"] }, extraInfoSpec);
     }
     
     chrome.webRequest.onBeforeRequest.removeListener(beforeRequest);
-    if (options.cacheBusting) {
+    if (Object.keys(options.fields.query).filter(k => !options.fields.query[k].Disabled)) {  
       chrome.webRequest.onBeforeRequest.addListener(beforeRequest,  {"urls":["http://*/*","https://*/*"]}, ["blocking"]);
     }
   });
