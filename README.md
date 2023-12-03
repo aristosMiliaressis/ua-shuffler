@@ -6,9 +6,11 @@ ua-shuffler is a chrome extension that lets you specify request headers with a l
 
 +support for cache buster insertion on every request
 
+![popup](images/popup.png)
+
 ![options](images/options.png)
 
-![popup](images/popup.png)
+![options2](images/options2.png)
 
 ### Installation Instructions
 - Clone Repo or Download Zip 
