@@ -1,5 +1,9 @@
 document.body.onload = populateOptionsPopup;
 optionsButton.onclick = () => window.open("/options/options.html", '_blank').focus();
+enableAllHeaders.onclick = () => updateAll('headers', true);
+disableAllHeaders.onclick = () => updateAll('headers', false);
+enableAllQuery.onclick = () => updateAll('query', true);
+disableAllQuery.onclick = () => updateAll('query', false);
 
 function populateOptionsPopup() {
     var headerTable = document.querySelector('#header_toggles');
@@ -50,5 +54,24 @@ function toggleField() {
         {
             chrome.runtime.sendMessage("reload");
         });
+    });
+}
+
+function updateAll(categoty, state) {
+     chrome.storage.local.get('options', (data) => {
+        var options = Object.assign({}, data.options);
+
+        for (var fieldName in options.fields[categoty]) {
+            options.fields[categoty][fieldName].Enabled = state;
+            button = Array.from(document.querySelectorAll('button')).find(el => el.textContent === fieldName)
+
+            button.classList.add(state ? 'enabled' : 'disabled');
+            button.classList.remove(state ? 'disabled' : 'enabled');
+
+            chrome.storage.local.set({options}, () => 
+            {
+                chrome.runtime.sendMessage("reload");
+            });
+        }
     });
 }

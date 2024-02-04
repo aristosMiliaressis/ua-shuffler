@@ -27,3 +27,7 @@ button {
 .column {
     flex: 50%;
 }
+
+.button-container {
+  display: flex;
+}
