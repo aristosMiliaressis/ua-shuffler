@@ -85,6 +85,10 @@ section {
     margin-left:10%
 }
 
+#exportButton, #importButton {
+    padding: 0px 5px;
+}
+
 #exportButton:hover, #importButton:hover {
     cursor: pointer;
 }
