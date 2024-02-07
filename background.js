@@ -96,14 +96,14 @@ function interpolate(e, value, referer, origin)
   }
   
   return value
-      .replace("{BASE32_URL_PREFIX}", base64Sub)
-      .replace("{NORMALIZED_URL}", normalizedUrl)
-      .replace("{DOCUMENT_URL}", e.documentUrl)
-      .replace("{ORIGIN_URL}", e.originUrl)
-      .replace("{INITIATOR_URL}", e.initiator)
-      .replace("{REFERER_HEADER}", referer)
-      .replace("{ORIGIN_HEADER}", origin)
-      .replace("{UNIXTIME}", Date.now())
+      .replace("{{BASE32_URL_PREFIX}}", base64Sub)
+      .replace("{{NORMALIZED_URL}}", normalizedUrl)
+      .replace("{{DOCUMENT_URL}}", e.documentUrl)
+      .replace("{{ORIGIN_URL}}", e.originUrl)
+      .replace("{{INITIATOR_URL}}", e.initiator)
+      .replace("{{REFERER_HEADER}}", referer)
+      .replace("{{ORIGIN_HEADER}}", origin)
+      .replace("{{UNIXTIME}}", Date.now())
 }
 
 function optionsUpdated() 
