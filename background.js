@@ -96,6 +96,7 @@ function interpolate(e, value, referer, origin)
   }
   
   return value
+      .replace("{{URL}}", e.url)
       .replace("{{BASE32_URL_PREFIX}}", base64Sub)
       .replace("{{NORMALIZED_URL}}", normalizedUrl)
       .replace("{{DOCUMENT_URL}}", e.documentUrl)
