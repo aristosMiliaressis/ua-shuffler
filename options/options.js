@@ -96,7 +96,7 @@ function updateOptions()
             if (oldOptions.fields[tab][fieldName.value] != undefined)
                 enabled = oldOptions.fields[tab][fieldName.value].Enabled
     
-            options.fields[tab][fieldName.value] = { Enabled: enabled, Values: fieldValues.value.split(/\r?\n/) };
+            options.fields[tab][fieldName.value] = { Enabled: enabled, Values: fieldValues.value.split(/\r?\n/).filter(l => l.length != 0) };
         }
         
         chrome.storage.local.set({options}, () =>
