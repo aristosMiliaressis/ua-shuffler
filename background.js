@@ -17,6 +17,11 @@ chrome.storage.local.get(['options'], function (result)
 optionsUpdated();
 
 function beforeRequest(e) {
+  let scopeRegex = new RegExp(options.scope)
+  if (e.url.match(scopeRegex) == null || Object.getOwnPropertyNames(options.fields.query).length == 0) {
+    return { cancel: false };
+  }
+  
   let url = new URL(e.url);
   let urlParams = new URLSearchParams(url.search);
 
@@ -32,11 +37,16 @@ function beforeRequest(e) {
     urlParams.set(name, randomValue)
   }
   url.search = urlParams.toString()
-  console.log(url)
+  
   return {"redirectUrl": url.toString()};
 }
 
 function beforeSendHeaders(e) {
+  let scopeRegex = new RegExp(options.scope)
+  if (e.url.match(scopeRegex) == null) {
+    return { requestHeaders: e.requestHeaders };
+  }
+  
   var referer, origin = "";
   for (const header of e.requestHeaders) {
     if (header.name.toLowerCase() === "referer") {

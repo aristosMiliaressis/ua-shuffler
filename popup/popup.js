@@ -4,6 +4,7 @@ enableAllHeaders.onclick = () => updateAll('headers', true);
 disableAllHeaders.onclick = () => updateAll('headers', false);
 enableAllQuery.onclick = () => updateAll('query', true);
 disableAllQuery.onclick = () => updateAll('query', false);
+scopeRegex.onchange = () => updateScope();
 
 function populateOptionsPopup() {
     var headerTable = document.querySelector('#header_toggles');
@@ -11,6 +12,8 @@ function populateOptionsPopup() {
 
     chrome.storage.local.get('options', (data) => {
         var options = Object.assign({}, data.options);
+        
+        scopeRegex.value = options.scope || "";
                
         for (var name in options.fields.headers) {
             var br = document.createElement('br');
@@ -73,5 +76,16 @@ function updateAll(categoty, state) {
                 chrome.runtime.sendMessage("reload");
             });
         }
+    });
+}
+
+function updateScope() {
+    chrome.storage.local.get('options', (data) => {
+        var options = Object.assign({}, data.options);
+        options.scope = scopeRegex.value;
+        chrome.storage.local.set({options}, () => 
+        {
+            chrome.runtime.sendMessage("reload");
+        });
     });
 }

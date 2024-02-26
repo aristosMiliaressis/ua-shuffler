@@ -11,6 +11,16 @@ button {
     color:white;
 }
 
+.input-div {
+    display: flex;
+    justify-content: space-between;
+    width:100%;
+}
+
+input {
+    width:100%;
+}
+
 .enabled {
     background-color: green;
 }

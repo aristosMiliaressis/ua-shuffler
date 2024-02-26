@@ -38,6 +38,7 @@ function renderTab()
     chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
+        options.fields = options.fields || {headers:{}, query:{}}
 
         var tabs = document.querySelectorAll('.tab');
         for (var tab of tabs) {
@@ -77,6 +78,7 @@ function updateOptions()
     chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
+        options.fields = options.fields || {'headers':{}, 'query':{}};
         var oldOptions = JSON.parse(JSON.stringify(options));
 
         var tab = document.querySelector('.tab.active').id;
