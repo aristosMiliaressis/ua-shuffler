@@ -136,6 +136,11 @@ function interpolate(e, value, referer, origin)
     normalizedUrl = normalizedUrl.substring(0, normalizedUrl.length-1);
   }
   
+  for (let variable in options.fields.variables) {
+    var randomValue = options.fields.variables[variable].Values[Math.floor(Math.random() * options.fields.variables[variable].Values.length)];
+    value = value.replace("{{"+variable+"}}", randomValue);
+  }
+  
   return value
       .replace("{{URL}}", e.url)
       .replace("{{BASE32_URL_PREFIX}}", base64Sub)

@@ -92,3 +92,8 @@ section {
 #exportButton:hover, #importButton:hover {
     cursor: pointer;
 }
+
+.bottom {
+    position:fixed;
+    bottom: 0;
+}
