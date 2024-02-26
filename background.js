@@ -47,15 +47,46 @@ function beforeSendHeaders(e) {
     return { requestHeaders: e.requestHeaders };
   }
   
-  var referer, origin = "";
+  var cookie = "", referer, origin = "";
   for (const header of e.requestHeaders) {
     if (header.name.toLowerCase() === "referer") {
       referer = header.value;
     } else if (header.name.toLowerCase() === "origin") {
       origin = header.value;
+    } else if (header.name.toLowerCase() === "cookie") {
+      cookie = header.value;
     }
   }
   
+  for (let name in options.fields.cookies) {
+    var to_modify = options.fields.cookies[name];
+    if (!to_modify.Enabled)
+      continue;
+    
+      var randomValue = to_modify.Values[Math.floor(Math.random() * to_modify.Values.length)];
+
+      randomValue = interpolate(e, randomValue, referer, origin)
+      
+      let found = false;
+      for (let header of e.requestHeaders) 
+      {
+        if (header.name.toLowerCase() === "cookie") 
+        {
+          header.value += ";" + name +"="+ randomValue;
+          found = true;
+        }
+      }
+
+      if (!found)
+      {
+        e.requestHeaders.push(
+          { 
+            "name": "cookie", 
+            "value": name+"="+randomValue
+          });
+      }
+  }
+    
   for (let name in options.fields.headers) {
     var to_modify = options.fields.headers[name];
     if (!to_modify.Enabled)

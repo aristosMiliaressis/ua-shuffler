@@ -38,7 +38,7 @@ function renderTab()
     chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
-        options.fields = options.fields || {headers:{}, query:{}}
+        options.fields = options.fields || {headers:{}, query:{}, cookies:{}}
 
         var tabs = document.querySelectorAll('.tab');
         for (var tab of tabs) {
@@ -78,7 +78,7 @@ function updateOptions()
     chrome.storage.local.get('options', (data) =>
     {
         var options = Object.assign({}, data.options);
-        options.fields = options.fields || {'headers':{}, 'query':{}};
+        options.fields = options.fields || {headers:{}, query:{}, cookies:{}}
         var oldOptions = JSON.parse(JSON.stringify(options));
 
         var tab = document.querySelector('.tab.active').id;
@@ -95,7 +95,7 @@ function updateOptions()
             fieldName.value = fieldName.value.toLowerCase();
             
             enabled = false;
-            if (oldOptions.fields[tab][fieldName.value] != undefined)
+            if (oldOptions.fields[tab] != undefined && oldOptions.fields[tab][fieldName.value] != undefined)
                 enabled = oldOptions.fields[tab][fieldName.value].Enabled
     
             options.fields[tab][fieldName.value] = { Enabled: enabled, Values: fieldValues.value.split(/\r?\n/).filter(l => l.length != 0) };

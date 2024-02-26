@@ -4,11 +4,14 @@ enableAllHeaders.onclick = () => updateAll('headers', true);
 disableAllHeaders.onclick = () => updateAll('headers', false);
 enableAllQuery.onclick = () => updateAll('query', true);
 disableAllQuery.onclick = () => updateAll('query', false);
+enableAllCookies.onclick = () => updateAll('cookies', true);
+disableAllCookies.onclick = () => updateAll('cookies', false);
 scopeRegex.onchange = () => updateScope();
 
 function populateOptionsPopup() {
     var headerTable = document.querySelector('#header_toggles');
     var queryTable = document.querySelector('#query_toggles');
+    var cookieTable = document.querySelector('#cookie_toggles');
 
     chrome.storage.local.get('options', (data) => {
         var options = Object.assign({}, data.options);
@@ -39,6 +42,19 @@ function populateOptionsPopup() {
 
             queryTable.appendChild(button);
             queryTable.appendChild(br);
+        }
+        
+        for (var name in options.fields.cookies) {
+            var br = document.createElement('br');
+            var button = document.createElement('button');
+
+            button.innerText = name;
+            button.setAttribute('category', 'cookies');
+            button.classList.add(options.fields.cookies[name].Enabled ? 'enabled' : 'disabled');
+            button.onclick = toggleField;
+
+            cookieTable.appendChild(button);
+            cookieTable.appendChild(br);
         }
     });
 }
