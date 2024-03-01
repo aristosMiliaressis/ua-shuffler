@@ -18,7 +18,7 @@ optionsUpdated();
 
 function beforeRequest(e) {
   let scopeRegex = new RegExp(options.scope)
-  if (e.url.match(scopeRegex) == null || Object.getOwnPropertyNames(options.fields.query).length == 0) {
+  if (e.url.match(scopeRegex)[0] == '' || Object.getOwnPropertyNames(options.fields.query).length == 0) {
     return { cancel: false };
   }
   
@@ -35,15 +35,17 @@ function beforeRequest(e) {
     randomValue = interpolate(e, randomValue, undefined, undefined)
 
     urlParams.set(name, randomValue)
-  }
+  } 
   url.search = urlParams.toString()
   
-  return {"redirectUrl": url.toString()};
+  return (e.url != url.toString()) 
+    ? { redirectUrl: url.toString() }
+    : { cancel: false };
 }
 
 function beforeSendHeaders(e) {
   let scopeRegex = new RegExp(options.scope)
-  if (e.url.match(scopeRegex) == null) {
+  if (e.url.match(scopeRegex)[0] == '') {
     return { requestHeaders: e.requestHeaders };
   }
   
