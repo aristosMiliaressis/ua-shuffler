@@ -18,7 +18,9 @@ optionsUpdated();
 
 function beforeRequest(e) {
   let scopeRegex = new RegExp(options.scope)
-  if (e.url.match(scopeRegex)[0] == '' || Object.getOwnPropertyNames(options.fields.query).length == 0) {
+  if (e.url.match(scopeRegex)[0] == '' 
+  || (Object.getOwnPropertyNames(options.fields.query).length == 0 
+   && Object.getOwnPropertyNames(options.fields.fragment).length == 0)) {
     return { cancel: false };
   }
   
@@ -37,6 +39,18 @@ function beforeRequest(e) {
     urlParams.set(name, randomValue)
   } 
   url.search = urlParams.toString()
+  
+  for (let name in options.fields.fragment) {
+    var to_modify = options.fields.fragment[name];
+    if (!to_modify.Enabled)
+      continue;
+
+    var randomValue = to_modify.Values[Math.floor(Math.random() * to_modify.Values.length)];
+
+    randomValue = interpolate(e, randomValue, undefined, undefined)
+
+    url.hash += `${name}=${randomValue}&`;
+  } 
   
   return (e.url != url.toString()) 
     ? { redirectUrl: url.toString() }
@@ -161,12 +175,14 @@ function optionsUpdated()
     options = Object.assign({}, data.options);
 
     chrome.webRequest.onBeforeSendHeaders.removeListener(beforeSendHeaders);
-    if (Object.keys(options.fields.headers).filter(k => !options.fields.headers[k].Disabled)) {  
+    if (Object.keys(options.fields.headers).filter(k => !options.fields.headers[k].Disabled)
+     || Object.keys(options.fields.cookies).filter(k => !options.fields.cookies[k].Disabled)) {  
       chrome.webRequest.onBeforeSendHeaders.addListener(beforeSendHeaders, { urls: [ "<all_urls>"] }, extraInfoSpec);
     }
     
     chrome.webRequest.onBeforeRequest.removeListener(beforeRequest);
-    if (Object.keys(options.fields.query).filter(k => !options.fields.query[k].Disabled)) {  
+    if (Object.keys(options.fields.query).filter(k => !options.fields.query[k].Disabled)
+     || Object.keys(options.fields.fragment).filter(k => !options.fields.fragment[k].Disabled)) {  
       chrome.webRequest.onBeforeRequest.addListener(beforeRequest,  {"urls":["http://*/*","https://*/*"]}, ["blocking"]);
     }
   });
