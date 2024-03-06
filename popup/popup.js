@@ -82,7 +82,7 @@ function updateAll(categoty, state) {
 
         for (var fieldName in options.fields[categoty]) {
             options.fields[categoty][fieldName].Enabled = state;
-            button = Array.from(document.querySelectorAll('button')).find(el => el.textContent === fieldName)
+            button = Array.from(document.querySelectorAll(`button[category=${categoty}]`)).find(el => el.textContent === fieldName)
 
             button.classList.add(state ? 'enabled' : 'disabled');
             button.classList.remove(state ? 'disabled' : 'enabled');
