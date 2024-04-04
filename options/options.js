@@ -92,7 +92,7 @@ function updateOptions()
             if (fieldName.value == "")
                 continue;
     
-            fieldName.value = fieldName.value.toLowerCase();
+            //fieldName.value = fieldName.value.toLowerCase();
             
             enabled = false;
             if (oldOptions.fields[tab] != undefined && oldOptions.fields[tab][fieldName.value] != undefined)
